@@ -1,4 +1,5 @@
-register、debug变量
+### register、debug变量
+```
 ---
 - hosts: all
   gather_facts: no
@@ -8,6 +9,8 @@ register、debug变量
       register: info
     - name: display vars
       debug: msg="{{info.stdout}}"
+
+```
 第一个shell执行完后，将得到的结果存到info里
 info是一个key value字典
 debug表示输出info.stdout的具体内容
