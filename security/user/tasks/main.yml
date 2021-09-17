@@ -1,0 +1,37 @@
+- name: 01 删除用户
+  user: name={{ item.name }} group={{ item.group }} state=absent remove=yes
+  with_items:
+    - { name: 'service' , group: 'servicegroup' }
+    - { name: 'opsadmin' , group: 'admingroup' }
+
+- name: 02 删除用户组
+  group: name={{ item }} state=absent
+  with_items:
+    - servicegroup
+    - admingroup
+
+- name: 03 建用户
+  user: name={{ item.name }} password={{ item.pass | password_hash('sha512') }} shell={{ item.shell }} groups={{ item.groups }} uid={{ item.uid }}
+  with_items:
+    - { name: 'holo_usr' , pass: 'cnp200@cspos@USR' , shell: '/bin/bash' , groups: '' , uid: '1000' }
+    - { name: 'holo_ops' , pass: 'cnp200@cspos@OPS' , shell: '/bin/bash' , groups: 'wheel' , uid: '1001' }
+
+- name: 04 配置cron允许holo_usr
+  lineinfile: path=/etc/cron.allow line="holo_usr"
+
+- name: 05 配置/etc/resolv.conf
+  copy: src={{ item }} dest=/etc backup=yes
+  with_items:
+#    - resolv.conf
+    - sysctl.conf
+    - profile
+
+- name: 06 加载系统参数
+  shell: sysctl -p
+
+- name: 07 修改用户口令有效期
+  shell: chage -m 7 -M 90 -W 30 -I 30 root && chage -m 7 -M 90 -W 30 -I 30 holo_ops && chage -m 7 -M 90 -W 30 -I 30 holo_usr
+
+- name: 3.2.1 规则：禁止通过键盘（CTRL＋ALT＋DEL）进行重启
+  file: path=/usr/lib/systemd/system/ctrl-alt-del.target state=absent
+
