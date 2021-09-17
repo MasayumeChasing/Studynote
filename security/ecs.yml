@@ -1,0 +1,13 @@
+---
+- hosts: all
+  gather_facts: no
+  become: yes
+  become_method: su
+  become_user: root
+  roles:
+#    - user
+    - del_tools 
+#    - network
+#    - ntp
+#    - system
+#    - ssh
