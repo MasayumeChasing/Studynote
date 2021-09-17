@@ -1,0 +1,41 @@
+# server 指的是dcg，das，dus...等不同的服务器（环境），且是外部传参，通过ansible -e server（如:dus，dcg，dus等）
+
+- name: 01 {{ server }}:创建服务目录
+  file: path={{ PACK_DIR }}  state=directory owner=holo_usr group=holo_usr mode=700 recurse=yes
+
+- name: 02 {{ server }}:解压软件包
+  unarchive: src=/etc/ansible/roles/deploy/package/{{ env }}/{{ server }}.tar.gz dest={{ PACK_DIR }} owner=holo_usr group=holo_usr
+
+- name: 03 {{ server }}:发送模板文件
+  unarchive: src=template.tar.gz dest={{ PACK_DIR }}/{{ server }}/config/template owner=holo_usr group=holo_usr
+  when: server == "gateway"
+
+- name: 04 {{ server }}:创建程序软连接
+  file: src={{ PACK_DIR }}/dist  dest={{ WORK_DIR }} owner=holo_usr group=holo_usr state=link
+  when: server == "portal"
+
+- name: 05 {{ server }}:创建程序软连接
+  file: src={{ PACK_DIR }}/{{ server }}  dest={{ WORK_DIR }} owner=holo_usr group=holo_usr state=link
+  when: server != "portal"
+
+- name: 06 {{ server }}:发送dog文件
+  template: src=dog.j2 dest={{ WORK_DIR }}/dog owner=holo_usr group=holo_usr mode=500
+  when: not (server == "portal" or server == "oms_web")
+
+- name: 07 修改文件权限
+  shell: find {{ PACK_DIR }}/{{ server }}/config/ -type f | xargs chmod 600
+  when: not (server == "portal" or server == "oms_web")
+  ignore_errors: yes
+
+- name: 08 修改文件权限
+  shell: find {{ PACK_DIR }}/ -type f  -name "holo_*" | xargs chmod 500
+  when: not (server == "portal" or server == "oms_web")
+  ignore_errors: yes
+
+- name: 09 {{ server }}:执行dog脚本
+  shell: sh {{ WORK_DIR }}/dog restart
+  when: not (server == "portal" or server == "oms_web")
+
+- name: 10 {{ server }}:创建定时任务
+  cron: name="{{ server }}定时启动dog脚本" job="{{ WORK_DIR }}/dog start"
+  when: not (server == "portal" or server == "oms_web")
