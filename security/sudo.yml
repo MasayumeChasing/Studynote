@@ -1,0 +1,23 @@
+---
+- hosts: all
+  become: yes
+  become_method: su
+  become_user: root
+  tasks:
+    - name: 发送sudo包
+      copy: src=sudo-1.9.5-3.el6.x86_64.rpm dest=/tmp
+    
+    - name: 安装
+      shell: rpm -Uvh /tmp/sudo-1.9.5-3.el6.x86_64.rpm
+    
+    - name: 删除sudo包
+      file: path=/tmp/sudo-1.9.5-3.el6.x86_64.rpm state=absent
+
+    - name: 查看目录
+      shell: sudo -V |head -1
+      register: xx
+
+    - name:
+      debug:
+        msg: "{{ xx.stdout_lines }}"
+
