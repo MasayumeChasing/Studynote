@@ -1,0 +1,12 @@
+- name: 01 发送sshd_config文件
+  template: src=sshd_config.j2 dest=/etc/ssh/sshd_config owner=root group=root mode=600 backup=yes
+  notify: restart sshd
+
+- name: 02 修改private key和 public key 文件属主
+  shell: chown -R root:root /etc/ssh
+
+- name: 03 修改private key和 public key 文件权限
+  shell: find /etc/ssh -name "*key*" -exec chmod 400 {} \;
+
+- name: 04 确保authorized_keys为空
+  shell: echo "" > /root/.ssh/authorized_keys
