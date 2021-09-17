@@ -1,0 +1,94 @@
+#!/bin/bash
+
+CURR_DIR=$(cd `dirname $0`; pwd)	# 当前用户根目录
+DATE=$(date +%Y%m)			# 获取年月
+LOG_FILE="/log/holo/mps/"		# 运行日志文件
+DOG_LOG="/log/holo/dog/"		# dog日志文件
+CFG=${CURR_DIR}/config/config.yaml	# 配置文件
+APP=holo_mps
+PROGRAM=${CURR_DIR}/dog
+CRONTAB_CMD="*/1 * * * * $PROGRAM start"
+STEP=10
+
+if [ ! -d "$LOG_FILE" ]; then
+    mkdir "$LOG_FILE"
+fi
+
+if [ ! -d "$DOG_LOG" ]; then
+    mkdir "$DOG_LOG"
+fi
+
+if  [ -f  "/opt/ops/config.ini" ];then
+    config=`cat /opt/ops/config.ini`
+    templ=`cat ${CURR_DIR}/config/config.yaml.tpl`
+    printf "${config}\ncat << EOF\n$templ\nEOF" | bash > $CURR_DIR/config/config.yaml
+fi
+
+#创建定时任务
+count=`crontab -l | grep $PROGRAM | grep -v "grep" | wc -l`
+    if [ $count -lt 1 ]; then
+        (crontab -l 2>/dev/null | grep -Fv $PROGRAM; echo "$CRONTAB_CMD") | crontab -
+        count=`crontab -l | grep $PROGRAM | grep -v "grep" | wc -l`
+        if [ $count -lt 1 ]; then
+            echo "create cron faild."
+            exit 1
+        fi
+    fi
+
+ser=`ps -ef |grep $APP |grep -v grep |awk '{print $2}'`
+echo $ser >"$CURR_DIR/$APP.pid"
+
+function start() {
+    if [ "$ser" != "" ];then
+	    echo "$APP running. pid=$ser" >> $LOG_FILE/${DATE}.log
+	else
+        echo start $APP
+        echo `date`,"start $APP"   >> $LOG_FILE/${DATE}.log
+        if [ -f "/lib64/libmps_common.so" ]; then
+            rm -rf /lib64/libmps_common.so
+        fi
+
+        ln -s ${CURR_DIR}/lib/libmps_common.so /lib64/libmps_common.so
+        $CURR_DIR/$APP -c $CFG >/dev/null 2>&1 &
+    fi
+}
+
+function stop() {
+    echo stop $APP
+    sleep 1
+    if [ "$ser" != "" ];then
+        kill -9 $ser
+    fi
+}
+
+function restart() {
+    stop
+    start
+}
+
+
+function status() {
+    if [ "$ser" != "" ];then
+        echo $APP started pid=$ser
+    else
+        echo $APP stoped
+    fi
+}
+
+function help() {
+    echo "$0 restart|start|stop|status"
+}
+
+if [ "$1" == "" ]; then
+    help
+elif [ "$1" == "restart" ];then
+    restart
+elif [ "$1" == "stop" ];then
+    stop
+elif [ "$1" == "start" ];then
+    start
+elif [ "$1" == "status" ];then
+    status
+else
+    help
+fi
