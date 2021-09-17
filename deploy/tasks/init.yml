@@ -1,0 +1,56 @@
+# with_items可以用于迭代一个列表或字典，通过{{ item }}获取每次迭代的值。
+
+- name: 01 删除用户
+  user: name={{ item.name }} group={{ item.group }} state=absent remove=yes
+  with_items:
+    - { name: 'service' , group: 'servicegroup' }
+    - { name: 'opsadmin' , group: 'admingroup' }
+    - { name: 'gluster' , group: 'gluster' }
+
+- name: 02 删除用户组
+  group: name={{ item }} state=absent
+  with_items:
+    - servicegroup
+    - admingroup
+
+- name: 03 创建用户
+  user: name={{ item.name }} password={{ item.pass | password_hash('sha512') }} shell={{ item.shell }} groups={{ item.groups }} uid={{ item.uid }}
+  with_items:
+    - { name: 'holo_usr' , pass: 'cnp200@cspos@USR' , shell: '/bin/bash' , groups: '' , uid: '1000' }
+    - { name: 'holo_ops' , pass: 'cnp200@cspos@OPS' , shell: '/bin/bash' , groups: 'wheel' , uid: '1001' }
+
+- name: 04 修改目录权限
+  file: path={{ item }} state=directory owner=holo_usr group=holo_usr mode=700
+  with_items:
+    - /opt
+    - /log
+
+- name: 05 创建目录
+  file: path={{ item }} state=directory owner=holo_usr group=holo_usr mode=700 recurse=yes
+  with_items:
+    - /opt/holo
+    - /opt/ops/project
+    - /opt/ops/scc/user
+    - /opt/ops/scc/access
+    - /opt/ops/scc/media
+    - /opt/ops/certs
+
+- name: 06 安装scc
+  shell: rpm -Uvh http://obs.cn-north-5.myhuaweicloud.com/fuxi-yum/x86_64/test/Packages/seccomponent-1.0.1-1.5e.release.x86_64.rpm
+#  when: SCC == "yes"
+
+- name: 07 配置cron允许holo_usr
+  lineinfile: path=/etc/cron.allow line="holo_usr"    #在=/etc/cron.allow中查找holo_user这个字符串，存在则不执行任何操作，不存在则在文本末尾插入
+
+- name: 07 安装jre
+  unarchive: src=jre.tar.gz  dest=/home/holo_usr  owner=holo_usr group=holo_usr
+#  when: server in "eudms eums udms ums mns idss dss"
+
+- name: 08 配置jre环境变量
+  lineinfile: path=/home/holo_usr/.bashrc line={{ item }}
+  with_items:
+    - "export JAVA_HOME=/home/holo_usr/jre"
+    - "export CLASSPATH=.:/home/holo_usr/jre/lib"
+    - "export PATH=/home/holo_usr/jre/bin:$PATH"
+#  when: server in "eudms eums udms ums mns idss dss"
+
