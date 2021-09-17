@@ -1,0 +1,2 @@
+PACK_DIR: "/opt/ops/project/{{ server }}_{{ ansible_date_time.date }}"
+WORK_DIR: "/opt/holo/{{ server }}"
