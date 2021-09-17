@@ -1,0 +1,12 @@
+- name: 01 挂载/tmp  noexec
+  shell: mount -o remount,nosuid,noexec /tmp
+
+- name: 02 挂载/dev/shm  noexec
+  shell: mount -o remount,noexec /dev/shm
+ 
+- name: 03 配置开机挂载
+  lineinfile: path=/etc/rc.d/rc.local line={{ item }}
+  with_items:
+    - "mount -o remount,nosuid,noexec /tmp"
+    - "mount -o remount,noexec /dev/shm"
+
