@@ -1,0 +1,4 @@
+- include: init.yml
+  tags: init
+- include: deploy.yml
+  tags: deploy
