@@ -1,0 +1,10 @@
+- name: 01 配置/etc/resolv.conf
+  copy: src=resolv.conf dest=/etc backup=yes
+
+- name: 02 发送ntp.conf文件
+  template: src=ntp.conf.j2 dest=/etc/ntp.conf backup=yes
+  notify: restart ntpd
+
+- name: 03 时间同步
+  shell: ntpdate -u ntp.myhuaweicloud.com
+
