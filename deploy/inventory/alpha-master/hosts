@@ -1,0 +1,108 @@
+
+###### 定义的变量  ######
+
+[all:vars]            
+LOG_PATH=/log/holo
+#APOLLO配置中心
+APOLLO_ADDR=100.95.154.155
+APOLLO_PORT=31110
+#APOLL0配置中心——HTTPS
+APOLLO_SSL_ADDR=100.95.132.237
+APOLLO_SSL_PORT=8080
+APOLLO_CLUSTER=default
+#连接
+ansible_ssh_user=holo_ops
+ansible_ssh_pass=cnp200@cspos@OPS
+ansible_become_method=su
+ansible_become_user=holo_usr
+ansible_become_password=cnp200@cspos@USR
+env=alpha-master
+SCC=no
+
+###### 定义的变量  ######
+
+[hflv]
+100.94.174.94  WANADDR="100.94.174.94"  
+
+[csps]
+100.94.174.94  WANADDR="100.94.174.94"  
+
+[das]
+100.94.174.94  WANADDR="100.94.174.94"  
+
+[dcg]
+100.94.174.94  WANADDR="100.94.174.94"  
+
+[dss]
+100.94.174.94  WANADDR="100.94.174.94"  
+
+[dus]
+100.94.174.94  WANADDR="100.94.174.94"  
+
+[eas]
+100.94.174.94  WANADDR="100.94.174.94"  
+
+[eums]
+100.94.174.94  WANADDR="100.94.174.94"  
+
+[feedback]
+100.94.174.94  WANADDR="100.94.174.94"  
+
+[gateway]
+100.94.174.94  WANADDR="100.94.174.94"  
+
+[gbmts]
+100.94.174.94  WANADDR="100.94.174.94"  
+
+[jvmts]
+100.94.174.94  WANADDR="100.94.174.94"  
+
+[meg]
+100.94.174.94  WANADDR="100.94.174.94"  
+
+[mmp]
+100.94.174.94  WANADDR="100.94.174.94"  
+
+[mns]
+100.94.174.94  WANADDR="100.94.174.94"  
+
+[mrs]
+100.94.174.94  WANADDR="100.94.174.94"  
+
+[mts]
+100.94.174.94  WANADDR="100.94.174.94"  
+
+[oms]
+100.94.174.94  WANADDR="100.94.174.94"  
+
+[udms]
+100.94.174.94  WANADDR="100.94.174.94"  
+
+[ums]
+100.94.174.94  WANADDR="100.94.174.94"  
+
+[xes]
+100.94.174.94  WANADDR="100.94.174.94"  
+
+[fss]
+100.94.174.94  WANADDR="100.94.174.94"  
+
+[eudms]
+100.94.174.94  WANADDR="100.94.174.94"  
+
+[idss]
+100.94.174.94  WANADDR="100.94.174.94"
+
+[amah_agent]
+100.94.174.94  WANADDR="100.94.174.94"  
+
+[wsmts]
+100.94.174.94  WANADDR="100.94.174.94"  
+
+[oms_web]
+100.94.174.94  WANADDR="100.94.174.94"  
+
+[portal]
+100.94.174.94  WANADDR="100.94.174.94"  
+
+
