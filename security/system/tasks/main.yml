@@ -1,0 +1,28 @@
+- name: 01 系统加固
+  copy: src={{ item.src }} dest={{ item.dest }} owner=root group=root mode={{ item.mode }} backup=yes
+  with_items:
+#    - { src: 'login.defs' , dest: '/etc' , mode: '644' }
+#    - { src: 'password-auth' , dest: '/etc/pam.d' , mode: '644' }
+#    - { src: 'system-auth' , dest: '/etc/pam.d' , mode: '644' }
+#    - { src: 'passwd' , dest: '/etc/pam.d' , mode: '644' }
+#    - { src: 'rsyslog.conf' , dest: '/etc' , mode: '644' }
+#    - { src: 'audit.rules' , dest: '/etc/audit' , mode: '644' }
+#    - { src: 'securetty' , dest: '/etc' , mode: '644' }
+#    - { src: 'su' , dest: '/etc/pam.d' , mode: '644' }
+#    - { src: 'useradd' , dest: '/etc/default' , mode: '644' }
+#    - { src: 'mount.conf' , dest: '/etc/modprobe.d' , mode: '644' }
+#    - { src: 'pwquality.conf' , dest: '/etc/security' , mode: '644' }
+#    - { src: 'login' , dest: '/etc/pam.d' , mode: '644' }
+    - { src: 'limits.conf' , dest: '/etc/security/' , mode: '644' }
+#    - { src: 'bashrc' , dest: '/etc' , mode: '644' }
+#    - { src: 'syslog' , dest: '/etc/logrotate.d' , mode: '644' }
+#    
+#- name: 02 修改message日志权限
+#  shell: chmod 600 /var/log/messages
+#
+#- name: 02 重启auditd
+#  shell: pkill -HUP -P 1 auditd
+#
+#- name: 04 重启rsyslog
+#  service: name=rsyslog state=restarted
+
