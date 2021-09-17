@@ -1,0 +1,99 @@
+[all:vars]
+LOG_PATH=/log/holo
+#APOLLO配置中心
+APOLLO_ADDR=100.95.154.155
+APOLLO_PORT=31111
+#APOLL0配置中心——HTTPS
+APOLLO_SSL_ADDR=100.95.132.237
+APOLLO_SSL_PORT=8080
+APOLLO_CLUSTER=feature01
+#连接
+ansible_ssh_user=holo_usr
+ansible_ssh_pass=cnp200@cspos@USR
+env=feature01
+
+[hflv]
+10.10.10.10  WANADDR="10.10.10.10"
+
+[csps]
+10.10.10.10  WANADDR="10.10.10.10"
+
+[das]
+10.10.10.10  WANADDR="10.10.10.10"
+
+[dcg]
+10.10.10.10  WANADDR="10.10.10.10"
+
+[dss]
+10.10.10.10  WANADDR="10.10.10.10"
+
+[dus]
+10.10.10.10  WANADDR="10.10.10.10"
+
+[eas]
+10.10.10.10  WANADDR="10.10.10.10"
+
+[eums]
+10.10.10.10  WANADDR="10.10.10.10"
+
+[feedback]
+10.10.10.10  WANADDR="10.10.10.10"
+
+[gateway]
+10.10.10.10  WANADDR="10.10.10.10"
+
+[gbmts]
+10.10.10.10  WANADDR="10.10.10.10"
+
+[jvmts]
+10.10.10.10  WANADDR="10.10.10.10"
+
+[meg]
+10.10.10.10  WANADDR="10.10.10.10"
+
+[mmp]
+10.10.10.10  WANADDR="10.10.10.10"
+
+[mns]
+10.10.10.10  WANADDR="10.10.10.10"
+
+[mrs]
+10.10.10.10  WANADDR="10.10.10.10"
+
+[mts]
+10.10.10.10  WANADDR="10.10.10.10"
+
+[oms]
+10.10.10.10  WANADDR="10.10.10.10"
+
+[udms]
+10.10.10.10  WANADDR="10.10.10.10"
+
+[ums]
+10.10.10.10  WANADDR="10.10.10.10"
+
+[xes]
+10.10.10.10  WANADDR="10.10.10.10"
+
+[fss]
+10.10.10.10  WANADDR="10.10.10.10"
+
+[eudms]
+10.10.10.10  WANADDR="10.10.10.10"
+
+[idss]
+10.10.10.10  WANADDR="10.10.10.10"
+
+[amah_agent]
+10.10.10.10  WANADDR="10.10.10.10"
+
+[wsmts]
+10.10.10.10  WANADDR="10.10.10.10"
+
+[oms_web]
+10.10.10.10  WANADDR="10.10.10.10"
+
+[portal]
+10.10.10.10  WANADDR="10.10.10.10"
+
+
