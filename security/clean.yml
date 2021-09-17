@@ -1,0 +1,55 @@
+---
+- hosts: all
+  become: yes
+  become_method: su
+  become_user: root
+  tasks:
+    - name: 删除history文件
+      shell: find / -type f -name ".bash_history" |xargs rm -f
+  
+    - name: 删除authorized_keys
+      shell: find / -type f -name "authorized_keys" |xargs rm -f
+  
+    - name: 删除known_hosts
+      shell: find / -type f -name "known_hosts" |xargs rm -f
+  
+    - name: 清空系统日志
+      shell: truncate -s 0 /var/log/yum.log && truncate -s 0 /var/log/messages && truncate -s 0 /var/log/sudo.log && truncate -s 0 /var/log/secure && truncate -s 0 /var/log/syslog && truncate -s 0 /var/log/lastlog && truncate -s 0 /var/log/cron && truncate -s 0 /var/log/daemon.log && truncate -s 0 /var/log/authlog && truncate -s 0 /var/log/auth.log
+
+    - name: 清空系统日志压缩文件
+      shell: find /var/log -type f -name "*.gz" |xargs rm -f
+    
+    - name: 清空holo_ops用户目录下文件
+      shell: rm -rf /home/holo_ops/*
+
+    - name: 清空holo_usr用户目录下除jre的文件
+      shell: cd /home/holo_ops && rm -rf `ls |grep -v "jre"` && cd ~
+    
+    - name: 清空root用户目录下文件
+      shell: rm -rf /root/*
+    
+    - name: 清空tmp目录
+      shell: rm -rf /tmp/*
+   
+#    - name: 清空历史日志
+#      shell: find /log/holo -type f -name "*.gz" |xargs rm -f
+#
+#    - name: 删除历史版本
+#      shell: cd /opt/ops/project && ls -lrt ./ | head -n -1 | xargs rm -rf && cd ~
+   
+#    - name: 查看目录
+#      shell: find /root /home /tmp  -type d |xargs ls -ld
+#      register: dir
+#
+#    - name: 查看文件
+#      shell: find /root /home /tmp  -type f |xargs ls -l
+#      register: file
+#    
+#    - name:
+#      debug:
+#        msg: "{{ dir.stdout_lines }}"
+#
+#    - name:
+#      debug:
+#        msg: "{{ file.stdout_lines }}"
+
