@@ -1,0 +1,99 @@
+[all:vars]
+LOG_PATH=/log/holo
+#APOLLO配置中心
+APOLLO_ADDR=100.95.154.155
+APOLLO_PORT=31111
+#APOLL0配置中心——HTTPS
+APOLLO_SSL_ADDR=100.95.132.237
+APOLLO_SSL_PORT=8080
+APOLLO_CLUSTER=default
+#连接
+ansible_ssh_user=holo_usr
+ansible_ssh_pass=cnp200@cspos@USR
+env=gamma
+
+[hflv]
+100.94.29.212  WANADDR="100.94.29.212"  web="no"        JAVA="no"
+
+[csps]
+100.94.29.212  WANADDR="100.94.29.212"  web="no"        JAVA="no"
+
+[das]
+100.94.29.212  WANADDR="100.94.29.212"  web="no"        JAVA="no"
+
+[dcg]
+100.94.29.212  WANADDR="100.94.29.212"  web="no"      JAVA="no"
+
+[dss]
+100.94.29.212  WANADDR="100.94.29.212"  web="no"     JAVA="yes"
+
+[dus]
+100.94.29.212  WANADDR="100.94.29.212"  web="no"         JAVA="no"
+
+[eas]
+100.94.29.212  WANADDR="100.94.29.212"  web="no"        JAVA="no"
+
+[eums]
+100.94.29.212  WANADDR="100.94.29.212"  web="no"    JAVA="no"
+
+[feedback]
+100.94.29.212  WANADDR="100.94.29.212"  web="no"    JAVA="no"
+
+[gateway]
+100.94.29.212  WANADDR="100.94.29.212"  web="no"     JAVA="no"
+
+[gbmts]
+100.94.29.212  WANADDR="100.94.29.212"  web="no"       JAVA="no"
+
+[jvmts]
+100.94.29.212  WANADDR="100.94.29.212"  web="no"       JAVA="no"
+
+[meg]
+100.94.29.212  WANADDR="100.94.29.212"  web="no"        JAVA="no"
+
+[mmp]
+100.94.29.212  WANADDR="100.94.29.212"  web="no"        JAVA="no"
+
+[mns]
+100.94.29.212  WANADDR="100.94.29.212"  web="no"     JAVA="yes"
+
+[mrs]
+100.94.29.212  WANADDR="100.94.29.212"  web="no"        JAVA="no"
+
+[mts]
+100.94.29.212  WANADDR="100.94.29.212"  web="no"         JAVA="no"
+
+[oms]
+100.94.29.212  WANADDR="100.94.29.212"  web="no"         JAVA="no"
+
+[udms]
+100.94.29.212  WANADDR="100.94.29.212"  web="no"    JAVA="yes"
+
+[ums]
+100.94.29.212  WANADDR="100.94.29.212"  web="no"     JAVA="yes"
+
+[xes]
+100.94.29.212  WANADDR="100.94.29.212"  web="no"        JAVA="no"
+
+[fss]
+100.94.29.212  WANADDR="100.94.29.212"  web="no"         JAVA="no"
+
+[eudms]
+100.94.29.212  WANADDR="100.94.29.212"  web="no"   JAVA="yes"
+
+[idss]
+100.94.29.212  WANADDR="100.94.29.212"  web="no"    JAVA="yes"
+
+[amah_agent]
+100.94.29.212  WANADDR="100.94.29.212"  web="no"  JAVA="no"
+
+[wsmts]
+100.94.29.212  WANADDR="100.94.29.212"  web="no"  JAVA="no"
+
+[oms_web]
+100.94.29.212  WANADDR="100.94.29.212"  web="yes"  JAVA="no"
+
+[portal]
+100.94.29.212  WANADDR="100.94.29.212"  web="yes"  JAVA="no"
+
+
