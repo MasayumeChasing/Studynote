@@ -1,0 +1,5 @@
+- name: 01 配置静态IP,发送ifcfg-eth0文件
+  template: src=ifcfg-eth0.j2 dest=/etc/sysconfig/network-scripts/ifcfg-eth0 backup=yes
+- name: 02 重启eth0网卡
+  shell: ifdown eth0 && ifup eth0
+
