@@ -1,0 +1,63 @@
+#- name: del
+#  shell: cd /opt/ops/project && ls -lrt ./ | head -n -1 | xargs rm -rf
+
+#- name: del
+#  shell: find / -type f -name ".bash_history" |xargs rm -f 
+#
+#- name: del
+#  shell: find / -type f -name "authorized_keys" |xargs rm -f
+#
+#- name: del
+#  shell: find / -type f -name "known_hosts" |xargs rm -f 
+#
+#- name: chmod
+#  shell: find /log -type f -name "scc.log" |xargs chmod 600
+
+#- name: msg
+#  shell: find /var/log/messages -type f  \( ! -user root -o ! -group root -o  -perm -100 -o -perm -010 -o -perm -020  -o -perm -040 -o -perm -001 -o -perm -002 -perm -004  \) |xargs chmod 600
+
+#- name: del
+#  shell: find /log -type f | xargs rm -f
+
+
+#- name: 查看目录
+#  shell: find /opt /log -type d |xargs ls -ld
+#  register: dir
+#
+#- name: 查看文件
+#  shell: find /opt /log -type f |xargs ls -l
+#  register: file
+#- name: del
+#  shell: rm -rf /tmp/*
+#
+#- name: root
+#  shell: find /root /tmp -ls
+#  register: rootfile
+#
+#- name: home
+#  shell: find /home -ls
+#  register: homefile
+
+- name: 查看公网IP
+  shell: egrep -r "([0-9]{1,3}\.){3}[0-9]{1,3}" /opt |grep -v 192|grep -v 1.0.0.1|grep -v Binary |grep -v 100.85.234.85|grep -v 0.0.0.0
+  register: xx
+
+- name:
+  debug:
+    msg: "{{ xx.stdout_lines }}"
+
+#- name:
+#  debug:
+#    msg: "{{ dir.stdout_lines }}"
+#
+#- name:
+#  debug:
+#    msg: "{{ file.stdout_lines }}"
+
+#- name:
+#  debug:
+#    msg: "{{ rootfile.stdout_lines }}"
+#  
+#- name:
+#  debug:
+#    msg: "{{ homefile.stdout_lines }}"
