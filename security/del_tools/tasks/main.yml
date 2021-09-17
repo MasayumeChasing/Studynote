@@ -1,0 +1,24 @@
+#- name: 01 卸载包
+#  yum: name={{ item }} state=removed
+#  with_items:
+#    - make
+#    - telnet
+#    - gcc
+#    - cpp
+#    - gdb
+#    - strace
+#    - gcc-c++
+#    - gcc-go
+#    - gcc-gfortran
+#    - biosdevname
+#    - ftp
+#    - telnet-server
+#    - tcpdump
+#    - sssd-ldap
+#    - openldap-client
+- name: 01 ss
+  shell: rpm -e binutils --nodeps
+  ignore_errors: yes
+#- name: 02 删除开发和编译工具
+#  shell: for i in tcpdump gdb strace readelf cpp gcc netcat nc nmap ethereal objdump aplay arecord vnstat vnstatsvg nload atop iftop sniffer wireshark winpcap ld lex rpcgen;do which $i 2>/dev/null |xargs rm -f ;done
+#  ignore_errors: yes
