@@ -1,0 +1,12 @@
+---
+- hosts: all
+  become: yes
+  become_method: su
+  become_user: root
+  roles:
+#    - cce_user
+    - del_tools 
+#    - network
+#    - ntp
+#    - system
+#    - ssh
