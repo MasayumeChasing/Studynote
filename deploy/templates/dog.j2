@@ -1,0 +1,120 @@
+#!/bin/bash
+source ~/.bashrc
+if [[ $USER != "holo_usr" ]]; then
+    echo -e "Error:This script should be run as holo_usr!"
+    exit 1
+fi
+
+WORK_DIR=$(cd `dirname $0`; pwd)
+CFG=$WORK_DIR/config/config.yaml        # 配置文件
+APP=${WORK_DIR##*/}
+case $APP in
+eudms|eums|udms|ums|mns)
+  	APP_NAME=holo_${APP}.jar
+        PLATFORM=".saas"
+        ;;
+idss)
+  	APP_NAME=holo_${APP}.jar
+        PLATFORM=".paas"
+        ;;
+dss)
+  	APP_NAME=holo_${APP}.jar
+        PLATFORM=""
+        ;;
+*)
+	APP_NAME=holo_${APP}
+	;;
+esac
+
+declare -x APOLLO_ADDR={{ APOLLO_ADDR }}
+declare -x APOLLO_PORT={{ APOLLO_PORT }}
+declare -x APOLLO_SSL_ADDR={{ APOLLO_SSL_ADDR }}
+declare -x APOLLO_SSL_PORT={{ APOLLO_SSL_PORT }}
+declare -x APOLLO_CLUSTER={{ APOLLO_CLUSTER }}
+declare -x NETWORK_LANADDR={{ ansible_eth0.ipv4.address }}
+declare -x NETWORK_WANADDR={{ WANADDR }}
+declare -x LOG_PATH=/log/holo
+
+if [ -d /usr/local/seccomponent -a ! -d /log/holo/$APP/scc ];then
+  mkdir -p /log/holo/$APP/scc
+fi
+
+
+JAVA_OPS="-Dapollo.configService=http://$APOLLO_ADDR:$APOLLO_PORT -server -Xms1024m -Xmx1024m -Xss256k -XX:NewRatio=4 -Dapp.id=service${PLATFORM}.$APP -Dapollo.cluster=$APOLLO_CLUSTER -Dapollo.cacheDir=/opt/ops -Dspring.config.location=$CFG"
+
+if [ -f $WORK_DIR/config/config.yaml.tpl ];then
+	printf "cat << EOF\n`cat $WORK_DIR/config/config.yaml.tpl`\nEOF" | bash > $WORK_DIR/config/config.yaml
+fi
+
+function start() {
+        ps -ef | grep -w "$WORK_DIR/$APP_NAME" | grep -v "grep" >/dev/null 2>&1
+        if [ $? -eq 0 ];then
+                echo "程序已启动" && exit 1
+        fi
+
+        echo "start $APP_DIR"
+        if [ "${APP_NAME##*.}" == "jar" ];then
+                nohup java $JAVA_OPS -jar $WORK_DIR/$APP_NAME  >/dev/null 2>&1 &
+        else
+                nohup $WORK_DIR/$APP_NAME -c $CFG >/dev/null 2>&1 &
+        fi
+
+        sleep 5
+        ps -ef | grep -w "$WORK_DIR/$APP_NAME" | grep -v "grep" >/dev/null 2>&1
+        if [ $? -eq 0 ];then
+            echo "程序启动完毕"
+        else
+            echo "程序启动失败"
+            exit 101
+        fi
+}
+
+function stop() {
+        PID=`ps -ef | grep -w "$WORK_DIR/$APP_NAME" | grep -v "grep" | awk '{print $2}'`
+        if [ -n "$PID" ];then
+           echo "stop $APP_DIR"
+           kill -9 $PID
+        else
+          echo "程序未启动"
+        fi
+}
+
+function restart() {
+        stop
+        start
+}
+
+function T() {
+    time=`ps -eo pid,lstart,etime | grep -w $APP_NAME |awk '{print $7}'`
+    echo "$APP_DIR Running time $time"
+}
+
+function status() {
+        PID=`ps -ef | grep -w "$WORK_DIR/$APP_NAME" | grep -v "grep" | awk '{print $2}'`
+        if [ -n "$PID" ];then
+          echo $APP_NAME started pid=$PID
+        else
+          echo $APP_NAME stoped
+        fi
+}
+
+function help() {
+        echo "$0 start|stop|restart|status|T 显示运行时间"
+}
+
+if [ "$1" == "" ]; then
+        help
+elif [ "$1" == "stop" ];then
+        stop
+elif [ "$1" == "start" ];then
+        start
+elif [ "$1" == "T" ];then
+        T
+elif [ "$1" == "restart" ];then
+        restart
+elif [ "$1" == "status" ];then
+        status
+else
+        help
+fi
+
